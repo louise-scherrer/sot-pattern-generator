@@ -1359,6 +1359,12 @@ int &PatternGenerator::OneStepOfControl(int &dummy, int time) {
           m_WaistPositionAbsolute(i) = CurrentConfiguration(i);
           m_WaistAttitudeAbsolute(i) = CurrentConfiguration(i + 3);
         }
+        // test waist
+        MatrixHomogeneous WaistPoseAttAbsolute;
+        getAbsoluteWaistPosAttHomogeneousMatrix(WaistPoseAttAbsolute);
+        m_WaistAttitudeMatrix = WaistPoseAttAbsolute;
+        // end added lines for test on waist
+
         m_COMRefPos(0) = lCOMRefState.x[0];
         m_COMRefPos(1) = lCOMRefState.y[0];
         m_COMRefPos(2) = lCOMRefState.z[0];
