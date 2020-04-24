@@ -1477,6 +1477,12 @@ int &PatternGenerator::OneStepOfControl(int &dummy, int time) {
                        m_NextSamplingLeftFootAbsPos, m_LeftFootPosition,
                        m_dotLeftFootPosition, m_count);
 
+    // test waist 2
+    MatrixHomogeneous WaistPoseAttAbsolute2;
+    getAbsoluteWaistPosAttHomogeneousMatrix(WaistPoseAttAbsolute2);
+    m_WaistAttitudeMatrix = WaistPoseAttAbsolute2;
+    // end added lines for test on waist
+
     m_count++;
 
     Eigen::Matrix<double, 4, 1> newRefPos, oldRefPos;
