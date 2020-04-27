@@ -39,6 +39,12 @@ class sotPG__INIT {
 sotPG__INIT sotPG_initiator;
 #endif  //#ifdef VP_DEBUG
 
+// For debug loggers
+#define ENABLE_RT_LOG
+#include <dynamic-graph/logger.h>
+#include <dynamic-graph/real-time-logger.h>
+//
+
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
@@ -54,6 +60,13 @@ sotPG__INIT sotPG_initiator;
 using namespace std;
 namespace dynamicgraph {
 namespace sot {
+
+// Inilialization of the output stream
+//dynamicgraph::RealTimeLogger::instance();
+//of.open("/tmp/dg-LOGS.txt",std::ofstream::out|std::ofstream::app);
+//dgADD_OSTREAM_TO_RTLOG (of);
+//dynamicgraph::RealTimeLogger::destroy();
+//
 
 DYNAMICGRAPH_FACTORY_ENTITY_PLUGIN(PatternGenerator, "PatternGenerator");
 
