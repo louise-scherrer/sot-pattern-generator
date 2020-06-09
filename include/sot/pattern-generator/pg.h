@@ -159,6 +159,9 @@ class PatternGenerator_EXPORT PatternGenerator : public Entity {
   /*! \brief Integer for the support foot. */
   int m_SupportFoot;
 
+  /*! \brief Integer fot the phase. */
+  int m_Phase;
+
   /*! \brief Keep the frame reference */
   int m_ReferenceFrame;
 
@@ -320,6 +323,9 @@ class PatternGenerator_EXPORT PatternGenerator : public Entity {
 
   /*! \brief Getting the current support foot: 1 Left -1 Right. */
   unsigned int &getSupportFoot(unsigned int &res, int time);
+
+  /*! \brief Getting the current phase: 0 for DSP, 1 SSP on Left Foot, -1 SSP on Right Foot. */
+  int &getPhase(int &res, int time);
 
   /*! \brief Trigger the initialization of the algorithm */
   int &InitOneStepOfControl(int &dummy, int time);
@@ -573,6 +579,9 @@ class PatternGenerator_EXPORT PatternGenerator : public Entity {
 
   /*! \brief Externalize the support foot. */
   SignalTimeDependent<unsigned int, int> SupportFootSOUT;
+
+  /*! \brief Externalize the phase. */
+  SignalTimeDependent<int, int> phaseSOUT;
 
   /*! \brief Externalize the joint values for walking. */
   SignalTimeDependent<dynamicgraph::Vector, int> jointWalkingErrorPositionSOUT;

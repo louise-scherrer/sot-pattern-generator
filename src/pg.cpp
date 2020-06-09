@@ -82,6 +82,7 @@ PatternGenerator::PatternGenerator(const std::string &name)
       m_rightFootContact(true)  // It is assumed that the robot is standing.
       ,
       m_leftFootContact(true),
+      m_Phase(0),
       jointPositionSIN(
           NULL, "PatternGenerator(" + name + ")::input(vector)::position")
 
@@ -305,6 +306,11 @@ PatternGenerator::PatternGenerator(const std::string &name)
           boost::bind(&PatternGenerator::getRightFootContact, this, _1, _2),
           OneStepOfControlS,
           "PatternGenerator(" + name + ")::output(bool)::rightfootcontact")
+      ,
+      phaseSOUT(
+          boost::bind(&PatternGenerator::getPhase, this, _1, _2),
+          OneStepOfControlS,
+          "PatternGenerator(" + name + ")::output(int)::phase")
 
 {
   m_MotionSinceInstanciationToThisSequence.setIdentity();
@@ -477,7 +483,7 @@ PatternGenerator::PatternGenerator(const std::string &name)
                                     << InitLeftFootRefSOUT
                                     << InitRightFootRefSOUT);
 
-  signalRegistration(leftFootContactSOUT << rightFootContactSOUT);
+  signalRegistration(leftFootContactSOUT << rightFootContactSOUT << phaseSOUT);
 
 #endif
   initCommands();
@@ -1008,6 +1014,14 @@ bool &PatternGenerator ::getRightFootContact(bool &res, int time) {
   return res;
 }
 
+int &PatternGenerator ::getPhase(int &res, int time) {
+  sotDEBUGIN(25);
+  OneStepOfControlS(time);
+  res = m_Phase;
+  sotDEBUGOUT(25);
+  return res;
+}
+
 int &PatternGenerator::InitOneStepOfControl(int &dummy, int /*time*/) {
   sotDEBUGIN(15);
   // TODO: modified first to avoid the loop.
@@ -1517,11 +1531,13 @@ int &PatternGenerator::OneStepOfControl(int &dummy, int time) {
       m_leftFootContact = true;
       if (lRightFootPosition.stepType != -1) m_rightFootContact = false;
       m_DoubleSupportPhaseState = 0;
+      m_Phase = 1;
     } else if (lRightFootPosition.stepType == -1) {
       lSupportFoot = 0;
       m_rightFootContact = true;
       if (lLeftFootPosition.stepType != -1) m_leftFootContact = false;
       m_DoubleSupportPhaseState = 0;
+      m_Phase = -1;
     } else
     /* m_LeftFootPosition.z ==m_RightFootPosition.z
        We keep the previous support foot half the time
@@ -1529,6 +1545,7 @@ int &PatternGenerator::OneStepOfControl(int &dummy, int time) {
        */
     {
       lSupportFoot = m_SupportFoot;
+      if ((lLeftFootPosition.stepType == 10) || (lRightFootPosition.stepType == 10)) m_Phase = 0;
     }
 
     /* Update the class related member. */
