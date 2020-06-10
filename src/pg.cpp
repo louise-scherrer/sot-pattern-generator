@@ -1523,10 +1523,11 @@ int &PatternGenerator::OneStepOfControl(int &dummy, int time) {
     sotDEBUG(25) << "lLeftFootPosition.stepType: " << lLeftFootPosition.stepType
                  << " lRightFootPosition.stepType: "
                  << lRightFootPosition.stepType << endl;
+
     // Find the support foot feet.
     m_leftFootContact = true;
     m_rightFootContact = true;
-    if (lLeftFootPosition.stepType == -1) {
+    if (lLeftFootPosition.stepType == -1) { // -1 stands for Support Foot in SSP
       lSupportFoot = 1;
       m_leftFootContact = true;
       if (lRightFootPosition.stepType != -1) m_rightFootContact = false;
@@ -1545,7 +1546,8 @@ int &PatternGenerator::OneStepOfControl(int &dummy, int time) {
        */
     {
       lSupportFoot = m_SupportFoot;
-      if ((lLeftFootPosition.stepType == 10) || (lRightFootPosition.stepType == 10)) m_Phase = 0;
+      if ((lLeftFootPosition.stepType == 10) || (lRightFootPosition.stepType == 10)) m_Phase = 0; // 10 stands for DSP
+      m_DoubleSupportPhaseState = 1; // previously unused
     }
 
     /* Update the class related member. */
